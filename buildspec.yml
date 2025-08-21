@@ -3,7 +3,6 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      # You no longer need to run Maven, as you are not building a Java application
       - echo Logging in to Amazon ECR...
       - REPOSITORY_URI=467519156370.dkr.ecr.ap-south-1.amazonaws.com/cicd-ecs-2025-repository
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
@@ -15,7 +14,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image with 'latest' and incremental tags...
-      # Build the image from the Dockerfile in the current directory, applying both tags at once
+      - echo Build the image from the Dockerfile in the current directory, applying both tags at once
       - docker build -t $REPOSITORY_URI:latest -t $REPOSITORY_URI:$IMAGE_TAG .
 
   post_build:
@@ -25,8 +24,8 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      # This file is used to update the ECS service.
-      # It's best practice to reference the incremental tag for traceability.
+      - echo This file is used to update the ECS service.
+      - echo It's best practice to reference the incremental tag for traceability.
       - printf '[{"name":"course-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo printing imagedefinitions.json
       - cat imagedefinitions.json
