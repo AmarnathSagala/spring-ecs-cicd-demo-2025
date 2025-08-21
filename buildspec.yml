@@ -7,7 +7,6 @@ phases:
       - REPOSITORY_URI=467519156370.dkr.ecr.ap-south-1.amazonaws.com/cicd-ecs-2025-repository
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
       - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
-      - echo "Generated incremental tag: $IMAGE_TAG"
 
   build:
     commands:
